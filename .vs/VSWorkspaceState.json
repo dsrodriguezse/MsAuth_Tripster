@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\src",
+    "\\src\\controllers",
+    "\\src\\models"
   ],
-  "SelectedNode": "\\C:\\Users\\dsrod\\Source\\Repos\\MsAuth_Tripster",
+  "SelectedNode": "\\src\\models\\server.ts",
   "PreviewInSolutionExplorer": false
 }
