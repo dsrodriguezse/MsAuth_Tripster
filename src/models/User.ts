@@ -6,19 +6,39 @@ export interface IUser extends Document {
 }
 
 const userSchema: Schema = new Schema({
-    name: {
-        type: String,
-        required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    // Otros campos
-});
 
+    email: {
+        type: String
+    },
+    name: {
+        type: String
+    },
+    apellido: {
+        type: String
+    },
+    direccion: {
+        type: String
+    },
+    clave :{
+        type: String
+    },
+    telefono : {
+        type: String
+    },
+    birthday : {
+        type: String
+    },
+    rol: {
+        type: String
+    }
+});
+//module.exports = mongoose.model("usuarios", userSchema)
+const User = mongoose.model<IUser>('usuarios', userSchema);
+
+export default User;
+
+/*
 // Crea y exporta el modelo de usuario usando el esquema definido
 const User = mongoose.model<IUser>('Usuario', userSchema);
 
-export default User;
+export default User;*/

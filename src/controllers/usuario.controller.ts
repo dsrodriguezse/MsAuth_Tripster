@@ -82,10 +82,10 @@ export const getUsuarios = (req: Request, res: Response) => {
 export const getUsuarios = async (req: Request, res: Response) => {
     try {
         const usuarios = await User.find(); // Consulta usuarios
-        console.log(usuarios)
+        console.log({ usuarios })
         //let usu = { "NOMBRE": "ANDERSON", "APELLIDO": "VARGAS" }
         //res.json({ usu }); // Envia la lista de usuarios
-        res.json(usuarios);
+        res.json({usuarios});
     } catch (error) {
         console.error('Error al obtener usuarios:', error);
         res.status(500).json({ error: 'Error al obtener usuarios' }); // Manejar errores de la base de datos MongoDB
