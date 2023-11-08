@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import connection from '../db/connection';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { mongo } from 'mongoose';
+import User from '../models/User'; // Importa el modelo de usuario de Mongoose
 
 export const addUsuario = async (req: Request, res: Response) => {
 
@@ -61,3 +63,31 @@ export const loginUser = (req: Request, res: Response) => {
         }
     })   
 }
+
+////////////
+//MODIFICAR LA PETICION EN mongo
+/*
+export const getUsuarios = (req: Request, res: Response) => {
+    connection.query('SELECT * FROM productos', (err, data) => {
+        if (err) {
+            console.log(err)
+        } else {
+            res.json({
+                data
+            })
+        }
+    })
+}
+*/
+export const getUsuarios = async (req: Request, res: Response) => {
+    try {
+        const usuarios = await User.find(); // Consulta usuarios
+        console.log(usuarios)
+        //let usu = { "NOMBRE": "ANDERSON", "APELLIDO": "VARGAS" }
+        //res.json({ usu }); // Envia la lista de usuarios
+        res.json(usuarios);
+    } catch (error) {
+        console.error('Error al obtener usuarios:', error);
+        res.status(500).json({ error: 'Error al obtener usuarios' }); // Manejar errores de la base de datos MongoDB
+    }
+};

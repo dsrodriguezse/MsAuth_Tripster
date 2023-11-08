@@ -1,11 +1,13 @@
-export const singup = () => {
+import { Request, Response} from 'express'
 
+export const singup = (req: Request, res: Response) => {
+    res.send('singup');
 };
 
-export const singin = () => {
-
+export const singin = (req: Request, res: Response) => {
+    res.send('singin');
 };
 
-export const profile = () => {
-
+export const profile = (req: Request, res: Response) => {
+    res.send('profile');
 };
