@@ -97,11 +97,12 @@ export const addUsuario = async (req: Request, res: Response) => {
         });
     }
 };
+
 export const loginUser = async (req: Request, res: Response) => {
-    const { _id, clave } = req.body;
+    const { email, clave } = req.body;
 
     try {
-        const user = await User.findOne({ _id });
+        const user = await User.findOne({ email });
 
         if (!user) {
             // No existe el usuario en la base de datos
@@ -117,7 +118,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
         if (passwordMatch) {
             // Login exitoso -- Generamos el token
-            const token = jwt.sign({ _id }, process.env.SECRET_KEY || 'Tripster_2023', { expiresIn: '20000' });
+            const token = jwt.sign({ email }, process.env.SECRET_KEY || 'Tripster_2023', { expiresIn: '20000' });
 
             return res.json({
                 token,
