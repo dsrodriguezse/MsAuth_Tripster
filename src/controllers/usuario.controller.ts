@@ -6,7 +6,7 @@ import { mongo } from 'mongoose';
 import User from '../models/User'; // Importa el modelo de usuario de Mongoose
 import crypto from 'crypto';
 
-/*
+
 //MySQL
 export const addUsuarioMySQL = async (req: Request, res: Response) => {
 
@@ -64,11 +64,7 @@ export const loginUserMySQL = (req: Request, res: Response) => {
         }
     })   
 }
-*/
-////////////
-//MySQL
-/*
-export const getUsuarios = (req: Request, res: Response) => {
+export const getUsuariosMySQL = (req: Request, res: Response) => {
     connection.query('SELECT * FROM productos', (err, data) => {
         if (err) {
             console.log(err)
@@ -79,7 +75,8 @@ export const getUsuarios = (req: Request, res: Response) => {
         }
     })
 }
-*/
+////////////
+
 //Mongo
 export const addUsuario = async (req: Request, res: Response) => {
     const { nombre, password } = req.body;
@@ -116,9 +113,8 @@ export const loginUser = async (req: Request, res: Response) => {
         }
         // Existe
         const userPassword = user.clave;
-
-        
-        console.log(user)
+                
+        //console.log(user)
         const encriptarClave = (clave: string): string => {
             try {
                 const hash = crypto.createHash('sha256').update(clave).digest('hex');
@@ -148,8 +144,7 @@ export const loginUser = async (req: Request, res: Response) => {
             return res.json({
                 msg: 'Password incorrecto',
             });
-        }
-        
+        }        
     } catch (error) {
         console.error('Error al realizar la consulta en la base de datos:', error);
         return res.status(500).json({
@@ -169,12 +164,23 @@ export const getUsuarioPorId = async (req: Request, res: Response) => {
     }
 };
 
+export const getUsuarioToken = async (req: Request, res: Response) => {
+    try {
+        let id = req.params.id;
+        const usuario = await User.findById(id);
+        res.json({ usuario });
+    } catch (error) {
+        console.error('Error al obtener usuarios:', error);
+        res.status(500).json({ error: 'Error al obtener usuarios' }); // Manejar errores de la base de datos MongoDB
+    }
+};
+
 
 export const getUsuarios = async (req: Request, res: Response) => {
     try {
         const usuarios = await User.find(); // Consulta usuarios
         console.log({ usuarios })
-        //let usu = { "NOMBRE": "ANDERSON", "APELLIDO": "VARGAS" }
+        //let usu = { "NOMBRE": "NombreUsuario", "APELLIDO": "ApellidoUsuario" }
         //res.json({ usu }); // Envia la lista de usuarios
         res.json({usuarios});
     } catch (error) {

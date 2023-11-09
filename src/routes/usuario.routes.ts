@@ -1,14 +1,17 @@
 import { Router } from 'express';
 import { addUsuario, loginUser } from '../controllers/usuario.controller';
 
-import { getUsuarios } from '../controllers/usuario.controller';
-import validateToken from './validate-token';
+//import { getUsuarios } from '../controllers/usuario.controller';
+import { getUsuarios, getUsuarioPorId, getUsuarioToken } from '../controllers/usuario.controller';
 
+import validateToken from './validate-token';
+import { getDefault } from '../controllers/default.controller';
 
 const router = Router();
 
-router.post('/', addUsuario);
+router.get('/', getUsuarios);
 router.post('/login', loginUser);
-router.get('/usuarios', getUsuarios);
-//router.get('/usuarios/:id', defaultController.getUsuario);
+router.get('/:id', getUsuarioPorId);
+router.get('/info', validateToken, getUsuarioToken);
+
 export default router;

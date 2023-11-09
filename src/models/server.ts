@@ -40,7 +40,7 @@ class Server {
         try {
             await connectDB(); // Llama a la función para conectar a la base de datos
             // Aquí puedes colocar el resto de tu lógica de la aplicación
-            console.log('Entro a conectar la BdMongo');
+            //console.log('Entro a conectar la BdMongo');
         } catch (error) {
             // Manejar el error de conexión a la base de datos
             console.error('Error al iniciar la aplicación:', error);
@@ -49,9 +49,9 @@ class Server {
 
     routes() {
         this.app.use('/', routesDefault);
-        this.app.use('/api/productos', routesProducto );
-        //this.app.use('/api/usuarios', routesUsuario );
         this.app.use('/usuarios', routesUsuario);
+        this.app.use('/api/productos', routesProducto );
+        //router.get('/info', validateToken, getUsuarioPorId);
     }
     midlewares() {
         this.app.use(express.json());
