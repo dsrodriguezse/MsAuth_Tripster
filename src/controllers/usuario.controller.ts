@@ -4,7 +4,9 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { mongo } from 'mongoose';
 import User from '../models/User'; // Importa el modelo de usuario de Mongoose
+import crypto from 'crypto';
 
+/*
 //MySQL
 export const addUsuarioMySQL = async (req: Request, res: Response) => {
 
@@ -62,6 +64,7 @@ export const loginUserMySQL = (req: Request, res: Response) => {
         }
     })   
 }
+*/
 ////////////
 //MySQL
 /*
@@ -102,7 +105,8 @@ export const loginUser = async (req: Request, res: Response) => {
     const { email, clave } = req.body;
 
     try {
-        const user = await User.findOne({ email });
+        const user = await User.findById(email);
+        //console.log(email,clave,user);
 
         if (!user) {
             // No existe el usuario en la base de datos
@@ -113,10 +117,25 @@ export const loginUser = async (req: Request, res: Response) => {
         // Existe
         const userPassword = user.clave;
 
-        // Comparamos el password
-        const passwordMatch = await bcrypt.compare(clave, userPassword);
+        
+        console.log(user)
+        const encriptarClave = (clave: string): string => {
+            try {
+                const hash = crypto.createHash('sha256').update(clave).digest('hex');
+                return hash;
+            } catch (error) {
+                throw new Error('Error al encriptar la clave');
+            }
+        };
 
-        if (passwordMatch) {
+        const claveEncriptada = encriptarClave(clave);
+
+        console.log(claveEncriptada,userPassword)
+        // Comparamos el password
+        const passwordMatch = await bcrypt.compare(claveEncriptada, userPassword);
+        console.log(passwordMatch)
+
+        if (claveEncriptada==userPassword) {
             // Login exitoso -- Generamos el token
             const token = jwt.sign({ email }, process.env.SECRET_KEY || 'Tripster_2023', { expiresIn: '20000' });
 
@@ -125,10 +144,12 @@ export const loginUser = async (req: Request, res: Response) => {
             });
         } else {
             // Password incorrecto
+            
             return res.json({
                 msg: 'Password incorrecto',
             });
         }
+        
     } catch (error) {
         console.error('Error al realizar la consulta en la base de datos:', error);
         return res.status(500).json({
