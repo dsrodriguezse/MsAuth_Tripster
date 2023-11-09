@@ -5,7 +5,8 @@ import jwt from 'jsonwebtoken';
 import { mongo } from 'mongoose';
 import User from '../models/User'; // Importa el modelo de usuario de Mongoose
 
-export const addUsuario = async (req: Request, res: Response) => {
+//MySQL
+export const addUsuarioMySQL = async (req: Request, res: Response) => {
 
     const { nombre, password } = req.body;
 
@@ -21,7 +22,7 @@ export const addUsuario = async (req: Request, res: Response) => {
         }
     })
 }
-export const loginUser = (req: Request, res: Response) => {
+export const loginUserMySQL = (req: Request, res: Response) => {
         
     const { nombre, password } = req.body;
 
@@ -56,16 +57,13 @@ export const loginUser = (req: Request, res: Response) => {
                             msg: 'Password incorrecto',
                         })
                     }
-                })
-
-                
+                })                
             }           
         }
     })   
 }
-
 ////////////
-//MODIFICAR LA PETICION EN mongo
+//MySQL
 /*
 export const getUsuarios = (req: Request, res: Response) => {
     connection.query('SELECT * FROM productos', (err, data) => {
@@ -79,6 +77,64 @@ export const getUsuarios = (req: Request, res: Response) => {
     })
 }
 */
+//Mongo
+export const addUsuario = async (req: Request, res: Response) => {
+    const { nombre, password } = req.body;
+
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const nuevoUsuario = new User({ nombre, password: hashedPassword });
+        await nuevoUsuario.save();
+
+        res.json({
+            msg: 'Usuario agregado correctamente',
+        });
+    } catch (error) {
+        console.error('Error al agregar usuario:', error);
+        res.status(500).json({
+            msg: 'Error en el servidor',
+        });
+    }
+};
+export const loginUser = async (req: Request, res: Response) => {
+    const { _id, clave } = req.body;
+
+    try {
+        const user = await User.findOne({ _id });
+
+        if (!user) {
+            // No existe el usuario en la base de datos
+            return res.json({
+                msg: 'No existe el usuario en la base de datos',
+            });
+        }
+        // Existe
+        const userPassword = user.clave;
+
+        // Comparamos el password
+        const passwordMatch = await bcrypt.compare(clave, userPassword);
+
+        if (passwordMatch) {
+            // Login exitoso -- Generamos el token
+            const token = jwt.sign({ _id }, process.env.SECRET_KEY || 'Tripster_2023', { expiresIn: '20000' });
+
+            return res.json({
+                token,
+            });
+        } else {
+            // Password incorrecto
+            return res.json({
+                msg: 'Password incorrecto',
+            });
+        }
+    } catch (error) {
+        console.error('Error al realizar la consulta en la base de datos:', error);
+        return res.status(500).json({
+            msg: 'Error en el servidor',
+        });
+    }
+};
 
 export const getUsuarioPorId = async (req: Request, res: Response) => {
     try {

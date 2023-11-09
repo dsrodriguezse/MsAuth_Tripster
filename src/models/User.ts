@@ -1,35 +1,19 @@
 import mongoose, { Schema, Document } from 'mongoose';
 export interface IUser extends Document {
-    name: string;
-    email: string;
+    _id: string;
+    clave: string;
     // Otros campos
 }
 
 const userSchema: Schema = new Schema({
 
     _id: {
-        type: String
-    },
-    name: {
-        type: String
-    },
-    apellido: {
-        type: String
-    },
-    direccion: {
-        type: String
+        type: String,
+        required: true,
     },
     clave :{
-        type: String
-    },
-    telefono : {
-        type: String
-    },
-    birthday : {
-        type: String
-    },
-    rol: {
-        type: String
+        type: String,
+        required: true,
     }
 });
 //module.exports = mongoose.model("usuarios", userSchema)
