@@ -10,5 +10,5 @@ const router = Router();
 router.post('/', addUsuario);
 router.post('/login', loginUser);
 router.get('/usuarios', getUsuarios);
-
+//router.get('/usuarios/:id', defaultController.getUsuario);
 export default router;

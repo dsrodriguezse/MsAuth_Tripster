@@ -7,7 +7,7 @@ export interface IUser extends Document {
 
 const userSchema: Schema = new Schema({
 
-    email: {
+    _id: {
         type: String
     },
     name: {

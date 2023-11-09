@@ -79,6 +79,19 @@ export const getUsuarios = (req: Request, res: Response) => {
     })
 }
 */
+
+export const getUsuarioPorId = async (req: Request, res: Response) => {
+    try {
+        let id = req.params.id;
+        const usuario = await User.findById(id);
+        res.json({ usuario });
+    } catch (error) {
+        console.error('Error al obtener usuarios:', error);
+        res.status(500).json({ error: 'Error al obtener usuarios' }); // Manejar errores de la base de datos MongoDB
+    }
+};
+
+
 export const getUsuarios = async (req: Request, res: Response) => {
     try {
         const usuarios = await User.find(); // Consulta usuarios

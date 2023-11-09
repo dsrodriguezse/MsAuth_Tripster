@@ -6,3 +6,5 @@ export const getDefault = (req: Request, res: Response) => {
         msg: 'API funcionandoAA'
     })
 }
+
+//export.getDefault = getDefault;
