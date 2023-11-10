@@ -13,6 +13,9 @@ const validateToken = (req: Request, res: Response, next: NextFunction) => {
             const tokenValido = jwt.verify(bearerToken, process.env.SECRET_KEY || 'Tripster_2023');
             console.log(tokenValido)
             next();
+            /*return res.status(500).json({
+                msg: 'Acceso concedido;)',
+            });*/
         } catch (error) {
             res.status(400).json({
                 error: 'token no valido'

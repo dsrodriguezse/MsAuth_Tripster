@@ -3,8 +3,10 @@
     "",
     "\\src",
     "\\src\\controllers",
-    "\\src\\models"
+    "\\src\\db",
+    "\\src\\models",
+    "\\src\\routes"
   ],
-  "SelectedNode": "\\src\\models\\server.ts",
+  "SelectedNode": "\\Dockerfile",
   "PreviewInSolutionExplorer": false
 }

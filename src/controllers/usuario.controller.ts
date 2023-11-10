@@ -129,7 +129,7 @@ export const loginUser = async (req: Request, res: Response) => {
         console.log(claveEncriptada,userPassword)
         // Comparamos el password
         const passwordMatch = await bcrypt.compare(claveEncriptada, userPassword);
-        console.log(passwordMatch)
+        //console.log(passwordMatch)
 
         if (claveEncriptada==userPassword) {
             // Login exitoso -- Generamos el token
@@ -165,10 +165,17 @@ export const getUsuarioPorId = async (req: Request, res: Response) => {
 };
 
 export const getUsuarioToken = async (req: Request, res: Response) => {
+
     try {
-        let id = req.params.id;
-        const usuario = await User.findById(id);
-        res.json({ usuario });
+        const { email } = req.body;
+        console.log(req.body)
+        const user = await User.findById(email);
+        if (user) {
+            console.log('Encontro usuario')
+            return res.json({ user });            
+        } else {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
     } catch (error) {
         console.error('Error al obtener usuarios:', error);
         res.status(500).json({ error: 'Error al obtener usuarios' }); // Manejar errores de la base de datos MongoDB
