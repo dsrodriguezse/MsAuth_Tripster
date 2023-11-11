@@ -45,10 +45,10 @@ export const loginUserMySQL = (req: Request, res: Response) => {
                 bcrypt.compare(password, userPassword).then((result) => {
                     if(result) {
                         // Login exitoso -- Generamos el token
-                        const token = jwt.sign({
+                        const token = { token : jwt.sign({
                             nombre: nombre,
                         }, process.env.SECRET_KEY || 'Tripster_2023',
-                        { expiresIn : "20000" })
+                        { expiresIn : "20000" })}
                         
                         res.json({
                             token
@@ -120,20 +120,22 @@ export const loginUser = async (req: Request, res: Response) => {
                 const hash = crypto.createHash('sha256').update(clave).digest('hex');
                 return hash;
             } catch (error) {
+
                 throw new Error('Error al encriptar la clave');
             }
         };
+        
 
         const claveEncriptada = encriptarClave(clave);
 
-        console.log(claveEncriptada,userPassword)
+        //console.log(claveEncriptada,userPassword)
         // Comparamos el password
-        const passwordMatch = await bcrypt.compare(claveEncriptada, userPassword);
+        //const passwordMatch = await bcrypt.compare(claveEncriptada, userPassword);
         //console.log(passwordMatch)
 
         if (claveEncriptada==userPassword) {
             // Login exitoso -- Generamos el token
-            const token = jwt.sign({ email }, process.env.SECRET_KEY || 'Tripster_2023', { expiresIn: '20000' });
+            const token = jwt.sign({ email }, process.env.SECRET_KEY || 'Tripster_2023', { expiresIn: '10m' });
 
             return res.json({
                 token,
@@ -186,7 +188,7 @@ export const getUsuarioToken = async (req: Request, res: Response) => {
 export const getUsuarios = async (req: Request, res: Response) => {
     try {
         const usuarios = await User.find(); // Consulta usuarios
-        console.log({ usuarios })
+        //console.log({ usuarios })
         //let usu = { "NOMBRE": "NombreUsuario", "APELLIDO": "ApellidoUsuario" }
         //res.json({ usu }); // Envia la lista de usuarios
         res.json({usuarios});
