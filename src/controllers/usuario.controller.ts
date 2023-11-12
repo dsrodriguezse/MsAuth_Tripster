@@ -168,6 +168,7 @@ export const getUsuarioPorId = async (req: Request, res: Response) => {
 
 export const getUsuarioToken = async (req: Request, res: Response) => {
 
+    console.log("GetUSuarioToken");
     try {
         const { email } = req.body;
         console.log(req.body)
